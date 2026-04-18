@@ -52,6 +52,53 @@ latexmk -c      # remove auxiliares, mantém main.pdf
 latexmk -C      # remove tudo, inclusive main.pdf
 ```
 
+## Compilação com Docker no WSL
+
+Pré-requisitos:
+
+- WSL 2 com Docker funcionando (`docker --version`)
+- Docker Desktop aberto no Windows, com integração WSL habilitada para `Ubuntu-24.04`
+- Projeto acessível pelo WSL, por exemplo em `/mnt/c/Users/filipe/Desktop/Mestrado Em Musica/Dissertação/Projeto_PPGMUS_UNESPAR-latex`
+- Fontes do Windows montáveis em `/mnt/c/Windows/Fonts` para o XeLaTeX encontrar `Times New Roman`
+
+No WSL, entre na pasta do projeto:
+
+```bash
+cd "/mnt/c/Users/filipe/Desktop/Mestrado Em Musica/Dissertação/Projeto_PPGMUS_UNESPAR-latex"
+```
+
+Construa a imagem:
+
+```bash
+docker compose build
+```
+
+Compile o PDF:
+
+```bash
+docker compose run --rm latex
+```
+
+Limpe os auxiliares mantendo `main.pdf`:
+
+```bash
+docker compose run --rm clean
+```
+
+Também é possível rodar diretamente, sem compose:
+
+```bash
+docker build -t ppgmus-unespar-latex .
+docker run --rm -v "$PWD:/work" -v /mnt/c/Windows/Fonts:/usr/local/share/fonts/windows:ro ppgmus-unespar-latex
+```
+
+No PowerShell, defina explicitamente o caminho das fontes antes de usar o Compose:
+
+```powershell
+$env:WINDOWS_FONTS_DIR = "C:\Windows\Fonts"
+docker compose run --rm latex
+```
+
 ### VS Code
 
 A extensão [LaTeX Workshop](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop) detecta o `.latexmkrc` e o cabeçalho `% !TEX program = xelatex` do `main.tex`. Basta `Ctrl+Alt+B` para compilar.

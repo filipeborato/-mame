@@ -1,0 +1,19 @@
+services:
+  latex:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ppgmus-unespar-latex:latest
+    working_dir: /work
+    volumes:
+      - .:/work
+      - ${WINDOWS_FONTS_DIR:-/mnt/c/Windows/Fonts}:/usr/local/share/fonts/windows:ro
+    command: ["latexmk", "-xelatex", "main.tex"]
+
+  clean:
+    image: ppgmus-unespar-latex:latest
+    working_dir: /work
+    volumes:
+      - .:/work
+      - ${WINDOWS_FONTS_DIR:-/mnt/c/Windows/Fonts}:/usr/local/share/fonts/windows:ro
+    command: ["latexmk", "-c"]
