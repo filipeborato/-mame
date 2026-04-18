@@ -1,19 +1,24 @@
+x-latex-service: &latex-service
+  image: ppgmus-unespar-latex:latest
+  working_dir: /work
+  volumes:
+    - .:/work
+    - ${WINDOWS_FONTS_DIR:-/mnt/c/Windows/Fonts}:/usr/local/share/fonts/windows:ro
+
 services:
   latex:
+    <<: *latex-service
     build:
       context: .
       dockerfile: Dockerfile
-    image: ppgmus-unespar-latex:latest
-    working_dir: /work
-    volumes:
-      - .:/work
-      - ${WINDOWS_FONTS_DIR:-/mnt/c/Windows/Fonts}:/usr/local/share/fonts/windows:ro
     command: ["latexmk", "-xelatex", "main.tex"]
 
+  force:
+    <<: *latex-service
+    profiles: ["tools"]
+    command: ["latexmk", "-gg", "-xelatex", "main.tex"]
+
   clean:
-    image: ppgmus-unespar-latex:latest
-    working_dir: /work
-    volumes:
-      - .:/work
-      - ${WINDOWS_FONTS_DIR:-/mnt/c/Windows/Fonts}:/usr/local/share/fonts/windows:ro
+    <<: *latex-service
+    profiles: ["tools"]
     command: ["latexmk", "-c"]

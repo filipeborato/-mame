@@ -61,22 +61,23 @@ Pré-requisitos:
 - Projeto acessível pelo WSL, por exemplo em `/mnt/c/Users/filipe/Desktop/Mestrado Em Musica/Dissertação/Projeto_PPGMUS_UNESPAR-latex`
 - Fontes do Windows montáveis em `/mnt/c/Windows/Fonts` para o XeLaTeX encontrar `Times New Roman`
 
-No WSL, entre na pasta do projeto:
+No WSL, entre na pasta do projeto e compile:
 
 ```bash
 cd "/mnt/c/Users/filipe/Desktop/Mestrado Em Musica/Dissertação/Projeto_PPGMUS_UNESPAR-latex"
+docker compose up --build
 ```
 
-Construa a imagem:
+Nas próximas compilações, se a imagem já existir:
 
 ```bash
-docker compose build
+docker compose up
 ```
 
-Compile o PDF:
+Para forçar uma recompilação completa:
 
 ```bash
-docker compose run --rm latex
+docker compose run --rm force
 ```
 
 Limpe os auxiliares mantendo `main.pdf`:
@@ -85,18 +86,11 @@ Limpe os auxiliares mantendo `main.pdf`:
 docker compose run --rm clean
 ```
 
-Também é possível rodar diretamente, sem compose:
-
-```bash
-docker build -t ppgmus-unespar-latex .
-docker run --rm -v "$PWD:/work" -v /mnt/c/Windows/Fonts:/usr/local/share/fonts/windows:ro ppgmus-unespar-latex
-```
-
 No PowerShell, defina explicitamente o caminho das fontes antes de usar o Compose:
 
 ```powershell
 $env:WINDOWS_FONTS_DIR = "C:\Windows\Fonts"
-docker compose run --rm latex
+docker compose up --build
 ```
 
 ### VS Code
