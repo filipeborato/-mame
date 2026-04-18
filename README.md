@@ -80,9 +80,22 @@ make down     # remove containers/redes órfãs do Compose
 No PowerShell, defina explicitamente o caminho das fontes antes de usar o Compose:
 
 ```powershell
-$env:WINDOWS_FONTS_DIR = "C:\Windows\Fonts"
 docker compose up --build --abort-on-container-exit --exit-code-from latex
 ```
+
+O Compose lê automaticamente o arquivo `.env` local. Para Windows/PowerShell, use:
+
+```env
+WINDOWS_FONTS_DIR=C:\Windows\Fonts
+```
+
+Para WSL, o valor padrão já funciona:
+
+```env
+WINDOWS_FONTS_DIR=/mnt/c/Windows/Fonts
+```
+
+Há um modelo versionado em `.env.example`; o `.env` real fica fora do git.
 
 Sem `make`, o comando equivalente no WSL é:
 
