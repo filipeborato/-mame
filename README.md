@@ -65,32 +65,29 @@ No WSL, entre na pasta do projeto e compile:
 
 ```bash
 cd "/mnt/c/Users/filipe/Desktop/Mestrado Em Musica/Dissertação/Projeto_PPGMUS_UNESPAR-latex"
-docker compose up --build
+make pdf
 ```
 
-Nas próximas compilações, se a imagem já existir:
+Comandos disponíveis:
 
 ```bash
-docker compose up
-```
-
-Para forçar uma recompilação completa:
-
-```bash
-docker compose run --rm force
-```
-
-Limpe os auxiliares mantendo `main.pdf`:
-
-```bash
-docker compose run --rm clean
+make pdf      # compila com Docker Compose
+make force    # força recompilação completa
+make clean    # limpa auxiliares, mantém main.pdf
+make down     # remove containers/redes órfãs do Compose
 ```
 
 No PowerShell, defina explicitamente o caminho das fontes antes de usar o Compose:
 
 ```powershell
 $env:WINDOWS_FONTS_DIR = "C:\Windows\Fonts"
-docker compose up --build
+docker compose up --build --abort-on-container-exit --exit-code-from latex
+```
+
+Sem `make`, o comando equivalente no WSL é:
+
+```bash
+docker compose up --build --abort-on-container-exit --exit-code-from latex
 ```
 
 ### VS Code
