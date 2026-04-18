@@ -1,0 +1,230 @@
+% ------------------------
+% RESUMO
+% ------------------------
+\chapter*{Resumo}
+
+Este projeto investiga a mediação algorítmica na música eletroacústica a partir do uso de sistemas de inteligência artificial generativa em três papéis complementares: (i) como ferramenta composicional, ampliando e reorganizando operações de criação já presentes em práticas eletroacústicas; (ii) como coautora, atuando como agente que propõe material e transforma decisões ao longo do processo, tensionando noções de intenção, controle e autoria; e (iii) como sistema de geração de material sonoro, produzindo matéria-prima (timbres, texturas, gestos e estruturas) que pode ser trabalhada por técnicas de estúdio e por procedimentos de organização sonora. A pesquisa articula um eixo teórico que conecta perspectivas da música eletroacústica (materialidade, escuta, morfologia/estrutura e organização do som) com abordagens contemporâneas de geração por modelos (síntese neural, modelos de representação discreta e modelos condicionais). Metodologicamente, o trabalho combina revisão bibliográfica, análise de estudos de caso (obras, ferramentas e práticas de colaboração humano-máquina) e pesquisa prática em composição, incluindo a criação de um conjunto de experimentos composicionais documentados. Serão descritos os fluxos de trabalho, os pontos de decisão e os parâmetros de controle, buscando caracterizar como cada papel da IA (ferramenta, coautora e geradora de material) afeta o desenho do processo, a escuta do resultado e a construção de forma e significado. Como resultados esperados, pretende-se propor um modelo descritivo de mediação algorítmica aplicável a práticas eletroacústicas atuais, além de um repertório de procedimentos e critérios para uso crítico e musicalmente orientado de IA generativa na composição.
+
+\vspace{1em}
+\noindent\textbf{Palavras-chave:}
+música eletroacústica; inteligência artificial generativa; composição algorítmica; coautoria; síntese e geração sonora.
+
+
+\newpage
+
+% ------------------------
+% 1. CONSTRUÇÃO DO PROBLEMA
+% ------------------------
+\chapter{Construção do problema de pesquisa}
+
+\section{Revisão da literatura}
+
+A música eletroacústica consolidou, ao longo do século XX, um deslocamento do foco composicional: da nota para o som enquanto objeto, processo e organização perceptiva. A noção de \emph{objeto sonoro} e o programa analítico de uma escuta orientada à morfologia e às qualidades internas do som, formulados por Pierre Schaeffer, permanecem como base para pensar práticas em que material, técnica e escuta se codeterminam \cite{schaeffer1966traite}. No campo anglófono, as discussões reunidas por Emmerson evidenciam que a eletroacústica se define tanto por procedimentos técnicos quanto por linguagens e modelos de mediação entre gesto, suporte e forma \cite{emmerson1986language}. Em continuidade, Smalley propõe a espectromorfologia como vocabulário para descrever \emph{formas-de-som} e suas articulações temporais, reforçando que a organização musical, nesse contexto, emerge de relações entre energia espectral, morfologia e expectativa perceptiva \cite{smalley1997spectromorphology}. Landy, por sua vez, sistematiza a eletroacústica como \emph{arte da organização sonora}, enfatizando que métodos, taxonomias e critérios de escuta são parte constitutiva do próprio fazer composicional \cite{landy2007soundorganization}.
+
+Paralelamente, a história da computação musical e da síntese oferece o elo metodológico entre composição e sistemas formais. Roads reúne uma cartografia abrangente de técnicas de síntese, processamento, análise e controle, mostrando como a prática composicional pode ser entendida como desenho de procedimentos e não apenas de resultados \cite{roads1996computermusictutorial}. Wishart aprofunda essa visão ao discutir morfologia, transformação e continuidade do som como fundamentos poéticos e técnicos para uma estética do \emph{sonic art} \cite{wishart1996sonicart}. Nesse arco, a composição algorítmica aparece como tradição anterior à atual onda de IA: Nierhaus descreve paradigmas de automação musical e modelos gerativos que já colocavam, antes dos modelos contemporâneos, a questão da autoria distribuída entre humano e sistema \cite{nierhaus2009algorithmiccomposition}. A obra de Cope é exemplar ao tratar a geração como problema de estilo, recombinação e conhecimento musical formalizado, tensionando a fronteira entre ferramenta e coautoria \cite{cope1996emi}.
+
+No século XXI, a emergência de modelos de aprendizado de máquina para áudio reconfigura esse panorama: a mediação algorítmica deixa de operar apenas por regras explícitas e passa a incorporar modelos estatísticos que aprendem representações do som e do musical. WaveNet estabelece um marco ao demonstrar geração de áudio em domínio temporal com alta fidelidade, inaugurando uma linhagem de síntese neural baseada em modelos generativos \cite{oord2016wavenet}. O desenvolvimento de representações discretas (como em VQ-VAE) e autoencoders voltados a áudio musical alimenta tanto compressão quanto geração controlável, aproximando modelagem e material composicional \cite{oord2017vqvae,engel2017nsynth}. A proposta de DSP diferenciável (DDSP) explicita uma via híbrida especialmente relevante à eletroacústica: em vez de substituir a tradição do sinal, ela a internaliza como estrutura de modelo, permitindo que processos clássicos (osciladores, filtros, envelopes) sejam ajustados por aprendizado \cite{engel2020ddsp}. Nos modelos de música em larga escala, iniciativas como Jukebox e, mais recentemente, MusicGen e MusicLM ampliam a relação entre descrição textual, condicionamento e geração de material sonoro, trazendo para o centro do debate a controlabilidade semântica e a persistência temporal em minutos \cite{dhariwal2020jukebox,copet2023musicgen,agostinelli2023musiclm}. Além disso, a disponibilização de bases anotadas por especialistas, como o MusicCaps, cria infraestrutura para pesquisas que conectam linguagem natural e escuta descritiva --- aspecto diretamente alinhado à tradição eletroacústica de vocabulários de percepção e organização sonora \cite{musiccaps2023}.
+
+Uma tendência recente e decisiva para o escopo desta pesquisa é a convergência entre geração e \emph{edição} de música por instruções. Modelos como AudioLDM e AudioLDM~2 consolidam o uso de difusão em espaço latente para texto-para-áudio, com ganhos de qualidade e modularidade \cite{liu2023audioldm,liu2023audioldm2}. Trabalhos como AP-Adapter deslocam o foco do “gerar do zero” para “transformar um material existente”, oferecendo uma ponte direta com procedimentos eletroacústicos consagrados (timbre transfer, variação, reorquestração, recombinação) e reforçando a ideia de IA como ferramenta composicional e como sistema de geração de material bruto manipulável \cite{tsai2024apadapter}. Em paralelo, abordagens que integram explicitamente modelos de linguagem como codificadores de instrução (por exemplo, Tango) indicam uma via em que a mediação textual e a mediação sonora tornam-se parte do mesmo circuito composicional \cite{ghosal2023tango}. Por fim, avanços de 2024--2025 em arquitetura e eficiência (como MAGNeT e IMPACT) mostram que a pesquisa se desloca também para latência, controle e viabilidade prática, elementos que importam quando a IA passa a atuar como instrumento no tempo do ateliê composicional \cite{ziv2024magnet,huang2025impact}.
+
+No eixo “LLM voltado para composição e partitura”, a literatura de música simbólica oferece o enquadramento mais preciso: em vez de áudio contínuo, modela-se notação e estrutura em sequências longas, onde repetição, forma e coerência são centrais. O Music Transformer explicita essa problemática ao adaptar atenção relativa para capturar estrutura de longo prazo em performance/partitura \cite{huang2018musictransformer}. Museformer avança ao tratar explicitamente escalas (fina e grossa) de atenção para lidar com sequências extensas e padrões de repetição típicos do discurso musical \cite{zeng2022museformer}. Mais recentemente, MuPT aproxima, de modo direto, a discussão de LLMs da composição simbólica ao investigar pré-treinamento em grande escala e notações textuais (como ABC), recolocando o problema da representação como parte do problema estético e composicional \cite{qu2024mupt}. Esse conjunto sustenta a hipótese de que, para a eletroacústica, “LLM” pode operar menos como gerador de áudio e mais como mediador de processos: planejamento formal, descrição de transformações, geração de roteiros de estúdio e especificação de sistemas (patches, cadeias de processamento, partituras de ações), articulando linguagem, forma e som.
+
+Dessa forma, a literatura sugere um triplo papel para a IA generativa na composição eletroacústica: (i) ferramenta composicional, quando atua como extensão de técnicas e vocabulários já existentes; (ii) coautora, quando internaliza escolhas estilísticas e propõe material com autonomia relativa; e (iii) sistema de geração de material sonoro bruto, quando produz massas sonoras e variações que passam a ser organizadas por escuta, montagem e transformação, em continuidade com tradições da música concreta e da organização sonora.
+
+
+\section{Problematização}
+
+A mediação tecnológica constitui elemento estruturante da música eletroacústica desde suas origens. A formulação do \emph{objeto sonoro} por Schaeffer estabelece que material, técnica e escuta se articulam como sistema inseparável \cite{schaeffer1966traite}. A organização musical desloca-se da notação abstrata para a morfologia e para as qualidades internas do som, perspectiva aprofundada pela espectromorfologia de Smalley, que descreve relações entre energia espectral, gesto e expectativa perceptiva \cite{smalley1997spectromorphology}. Landy reforça que métodos e dispositivos técnicos não são acessórios, mas constitutivos da própria organização sonora \cite{landy2007soundorganization}. Assim, historicamente, a tecnologia não apenas viabiliza a produção sonora, mas participa da definição estética do material.
+
+No campo da composição algorítmica, a automatização já havia tensionado a noção de autoria muito antes da atual onda de IA. Nierhaus descreve paradigmas em que regras formais e sistemas generativos distribuem decisões entre humano e máquina \cite{nierhaus2009algorithmiccomposition}. A experiência de Cope, ao modelar estilos composicionais por recombinação e análise estrutural, antecipa o debate contemporâneo sobre geração e autoria distribuída \cite{cope1996emi}. Entretanto, esses modelos operavam predominantemente por regras explícitas ou formalizações estruturais transparentes.
+
+A emergência de modelos de aprendizado profundo para áudio introduz uma inflexão significativa nesse cenário. WaveNet demonstra geração de áudio diretamente no domínio temporal com alta fidelidade \cite{oord2016wavenet}, deslocando a mediação do campo simbólico para o campo estatístico. Representações discretas aprendidas (VQ-VAE) e autoencoders musicais ampliam essa capacidade ao modelar espaços latentes manipuláveis \cite{oord2017vqvae,engel2017nsynth}. Com o DDSP, processos clássicos de síntese (osciladores, filtros, envelopes) passam a ser integrados a estruturas diferenciáveis treináveis \cite{engel2020ddsp}, aproximando tradição de sinal e aprendizado de máquina. Mais recentemente, modelos baseados em difusão e condicionamento textual ampliam o controle semântico da geração sonora \cite{liu2023audioldm2,copet2023musicgen}.
+
+Essa transição desloca o debate da mera automatização para a agência algorítmica. Diferentemente dos sistemas regidos por regras explícitas, modelos neurais incorporam parâmetros aprendidos por otimização estatística, cuja lógica interna não é diretamente interpretável pelo compositor. A mediação algorítmica passa, então, a envolver processos de aprendizado, inferência e amostragem probabilística, tensionando noções tradicionais de controle, previsibilidade e intenção autoral já discutidas na composição algorítmica \cite{nierhaus2009algorithmiccomposition}.
+
+Além da geração de áudio, o campo da música simbólica evidencia que modelos baseados em atenção podem capturar estrutura de longo prazo em partitura e performance \cite{huang2018musictransformer}. Pesquisas recentes sobre pré-treinamento musical em larga escala aproximam explicitamente modelos de linguagem da composição simbólica \cite{qu2024mupt}. Essa vertente recoloca o problema da formalização estrutural em um contexto em que a eletroacústica historicamente privilegiou o som enquanto matéria concreta. Surge, portanto, uma estratificação de níveis de mediação: geração espectral (áudio), modelagem latente (representação intermediária) e planejamento estrutural (nível simbólico).
+
+Entretanto, a literatura ainda não sistematiza de modo consistente como esses níveis se articulam dentro da prática eletroacústica contemporânea. Enquanto teorias como a espectromorfologia descrevem categorias perceptivas de organização sonora \cite{smalley1997spectromorphology}, os modelos neurais operam sobre espaços latentes cuja correspondência com categorias perceptivas não é direta. A questão torna-se, então, dupla: (i) como integrar vocabulários de escuta e estruturas estatísticas aprendidas; e (ii) como caracterizar a inteligência artificial generativa não apenas como ferramenta instrumental, mas como agente de mediação em diferentes camadas do processo composicional.
+
+Dessa forma, identifica-se uma lacuna conceitual: embora existam estudos robustos sobre organização sonora, composição algorítmica e geração por aprendizado profundo, falta um modelo teórico que articule essas dimensões no contexto específico da música eletroacústica. A problematização central desta pesquisa consiste em investigar como a inteligência artificial generativa pode ser compreendida — teórica e praticamente — como mediação algorítmica em três papéis distintos, porém inter-relacionados: ferramenta composicional, coautora e sistema de geração de material sonoro.
+
+
+\section{Justificativa}
+
+A presente pesquisa se justifica, em primeiro lugar, pela relevância estética e epistemológica da mediação tecnológica na música eletroacústica. Ao longo de sua história, esse campo consolidou procedimentos em que o estúdio, o suporte técnico e os métodos de transformação do som não são apenas meios de produção, mas parte constitutiva do pensamento composicional, deslocando o foco para o som enquanto material e para a escuta enquanto princípio organizador \cite{schaeffer1966traite,smalley1997spectromorphology,landy2007soundorganization}. Nesse sentido, a entrada de sistemas de inteligência artificial generativa não representa um fenômeno periférico, mas uma continuidade transformada de um problema central da eletroacústica: como técnicas e sistemas determinam, ampliam e reorganizam o campo de possibilidades do material sonoro e da forma.
+
+Em segundo lugar, a pesquisa é oportuna porque a inteligência artificial generativa introduz um regime específico de mediação algorítmica baseado em modelos aprendidos, que difere tanto das tradições de síntese e processamento quanto da composição algorítmica clássica. Se a literatura de automação musical já discutia a distribuição de decisões entre humano e sistema \cite{nierhaus2009algorithmiccomposition,cope1996emi}, os modelos contemporâneos de geração de áudio e música ampliam essa discussão ao operar por representações estatísticas e espaços latentes, reconfigurando controle, previsibilidade e autoria no interior do processo composicional \cite{oord2016wavenet,oord2017vqvae,engel2020ddsp,copet2023musicgen}. Além disso, a emergência de modelos de texto-para-áudio e de edição por instrução desloca o foco do ``gerar do zero'' para procedimentos de transformação e variação sobre materiais existentes, criando uma ponte direta com práticas eletroacústicas de montagem, manipulação e reorquestração \cite{liu2023audioldm2,tsai2024apadapter,ghosal2023tango}.
+
+Em terceiro lugar, há uma lacuna acadêmica clara: apesar do crescimento acelerado da literatura técnica sobre modelos generativos para áudio e música, ainda é pouco sistematizada, no campo da música eletroacústica, uma abordagem que descreva e compare criticamente os papéis que esses sistemas assumem em processos composicionais reais. A pesquisa propõe contribuir com essa lacuna ao construir um modelo descritivo de mediação algorítmica que diferencie, mas também relacione, três funções recorrentes da IA generativa na composição: ferramenta composicional, coautora e sistema de geração de material sonoro. Essa diferenciação é especialmente necessária para evitar dois extremos recorrentes no debate contemporâneo: a adoção acrítica guiada apenas por performance técnica e a rejeição genérica baseada em pressupostos de substituição do compositor.
+
+Por fim, a justificativa artística e institucional reside no fato de que a pesquisa prática em composição permitirá testar, documentar e analisar fluxos de trabalho, pontos de decisão e estratégias de controle orientadas à escuta, produzindo conhecimento aplicável a contextos de criação e pesquisa em música. Ao articular teoria, estudos de caso e experimentação composicional, o projeto alinha-se a um programa de pós-graduação em música que valoriza a integração entre reflexão crítica, produção artística e investigação de tecnologias sonoras, contribuindo para a formação de repertório conceitual e metodológico capaz de sustentar práticas eletroacústicas contemporâneas com rigor e consciência estética \cite{emmerson1986language,roads1996computermusictutorial,wishart1996sonicart}.
+
+% ------------------------
+% 2. OBJETIVOS
+% ------------------------
+\chapter{Objetivos}
+
+\section{Objetivo geral}
+
+Investigar como sistemas de inteligência artificial generativa podem ser compreendidos e operacionalizados, no contexto da música eletroacústica, como formas de mediação algorítmica que atuam em três níveis inter-relacionados do processo composicional — ferramenta, coautora e sistema de geração de material sonoro — articulando materialidade, organização formal e escuta.
+
+\section{Objetivos específicos}
+
+\begin{itemize}
+  \item Mapear e analisar criticamente a literatura sobre música eletroacústica, composição algorítmica e modelos generativos de áudio e música, identificando convergências, tensões e lacunas conceituais.
+  
+  \item Caracterizar os diferentes níveis de mediação algorítmica (espectral/sonoro, latente/representacional e simbólico/estrutural) presentes em sistemas contemporâneos de IA generativa.
+  
+  \item Desenvolver e documentar experimentos composicionais que explorem o uso da IA como ferramenta, coautora e sistema de geração de material bruto, explicitando fluxos de trabalho, parâmetros de controle e estratégias de escuta.
+  
+  \item Analisar comparativamente os resultados musicais obtidos em cada configuração de mediação, avaliando implicações para controle, autoria, previsibilidade e construção formal.
+  
+  \item Propor um modelo descritivo de mediação algorítmica aplicável à prática eletroacústica contemporânea, oferecendo critérios conceituais e operacionais para o uso crítico de IA generativa na composição.
+\end{itemize}
+% ------------------------
+% 3. FUNDAMENTAÇÃO TEÓRICA
+% ------------------------
+\chapter{Fundamentação teórica}
+
+\section{Som, materialidade e organização na música eletroacústica}
+
+A música eletroacústica inaugura uma reconfiguração ontológica do fazer musical ao deslocar o foco da nota enquanto entidade abstrata para o som enquanto objeto, processo e fenômeno perceptivo. A formulação do \emph{objeto sonoro}, proposta por Schaeffer, estabelece que a escuta reduzida permite analisar o som por suas qualidades internas — morfologia, dinâmica, textura, envelope, espectro e comportamento temporal — independentemente de sua causa instrumental \cite{schaeffer1966traite}. A escuta deixa de ser orientada pela identificação da fonte e passa a concentrar-se na constituição fenomenológica do som enquanto acontecimento auditivo.
+
+Esse deslocamento implica uma ruptura com a centralidade da notação como instância organizadora primária. O material musical deixa de ser compreendido como representação simbólica prévia e passa a ser tratado como entidade concreta passível de manipulação técnica, gravação, transformação e montagem. O estúdio, nesse contexto, não é apenas espaço de registro, mas ambiente composicional no qual operações técnicas — corte, filtragem, inversão, granulação, espacialização — constituem atos estruturantes da forma. A materialidade sonora torna-se, portanto, condição de possibilidade da organização musical.
+
+Smalley desenvolve essa perspectiva ao propor a espectromorfologia como estrutura descritiva das relações entre energia espectral, gesto e expectativa temporal \cite{smalley1997spectromorphology}. Para além de uma taxonomia analítica, a espectromorfologia oferece um vocabulário capaz de articular comportamento espectral e direcionalidade temporal, permitindo compreender como formas-de-som constroem tensão, continuidade e transformação. A organização musical, nesse contexto, emerge da articulação dinâmica de processos — expansão, contração, aceleração, rarefação — cuja inteligibilidade depende da escuta e não de uma estrutura notacional subjacente.
+
+Landy sistematiza essa abordagem ao definir a eletroacústica como arte da organização sonora, enfatizando que métodos de produção e critérios de escuta são constitutivos do próprio pensamento composicional \cite{landy2007soundorganization}. O compositor eletroacústico atua simultaneamente como designer de material e como organizador perceptivo, articulando níveis microestruturais (timbre, grão, espectro) e macroestruturais (forma, percurso energético, dramaturgia sonora). Técnica e estética tornam-se, assim, dimensões inseparáveis: o dispositivo técnico não é neutro, mas participa ativamente da constituição do campo perceptivo.
+
+Essa tradição estabelece uma compreensão específica de mediação: o sistema técnico — seja gravador magnético, sintetizador modular ou ambiente digital — não apenas executa intenções prévias, mas condiciona o modo como o material é concebido, transformado e organizado. A mediação tecnológica é constitutiva do pensamento musical. Essa característica será fundamental para compreender, mais adiante, como sistemas contemporâneos de geração algorítmica se inserem nesse mesmo horizonte histórico, ainda que operando sob paradigmas computacionais distintos.
+
+\section{Tecnologia como mediação constitutiva}
+
+A mediação tecnológica não é acessória na música eletroacústica; ela estrutura o próprio campo. Emmerson demonstra que as linguagens eletroacústicas se definem pela relação entre gesto, suporte técnico e forma resultante \cite{emmerson1986language}. O gesto, nesse contexto, não é apenas corporal, mas também técnico: manipulações de fita, parametrizações digitais, desenho de envelopes e processos de espacialização tornam-se extensões operacionais da intenção composicional. O suporte tecnológico, longe de funcionar como meio neutro, participa da configuração da forma e da própria inteligibilidade do material sonoro.
+
+Roads, ao mapear técnicas de síntese, processamento e controle digital, evidencia que a composição pode ser entendida como desenho de procedimentos e sistemas \cite{roads1996computermusictutorial}. A obra eletroacústica emerge não apenas de decisões pontuais sobre eventos sonoros, mas da definição de arquiteturas operacionais: algoritmos de síntese, cadeias de processamento, sistemas de controle paramétrico e estratégias de organização temporal. Nesse sentido, o compositor aproxima-se da figura do projetista de sistemas, articulando níveis de abstração que vão do sinal acústico à macroestrutura formal.
+
+Wishart reforça essa perspectiva ao argumentar que transformação e continuidade sonora constituem fundamentos tanto poéticos quanto técnicos do \emph{sonic art} \cite{wishart1996sonicart}. A técnica não apenas viabiliza transformações, mas condiciona o tipo de continuidade possível. Processos como morphing espectral, interpolação paramétrica ou síntese granular instauram regimes específicos de temporalidade e percepção, redefinindo o que pode ser compreendido como gesto musical. A tecnologia, portanto, não apenas amplia recursos; ela redefine categorias estéticas.
+
+Nesse cenário, a técnica opera como extensão estruturante do pensamento composicional. A introdução de algoritmos no processo criativo — antes mesmo da inteligência artificial contemporânea — já configurava formas de mediação nas quais decisões eram parcialmente delegadas a sistemas formais. A composição algorítmica, conforme descrita por Nierhaus, evidencia paradigmas em que regras, modelos probabilísticos e processos gerativos redistribuem agência entre compositor e máquina \cite{nierhaus2009algorithmiccomposition}. O sistema deixa de ser mero executor e passa a participar da definição do resultado por meio de operações previamente configuradas.
+
+A experiência de Cope, ao modelar estilos por recombinação estrutural e análise formal, antecipa a problemática da autoria distribuída e da geração automatizada \cite{cope1996emi}. Ainda que baseada em regras explícitas e bases estilísticas codificadas, sua abordagem já tensiona a fronteira entre ferramenta e coautor, ao produzir material que excede a previsão detalhada do compositor-programador. A questão central deixa de ser apenas “quem executa” e passa a envolver “quem decide” e “em que nível ocorre a decisão”.
+
+Desse modo, a história da música eletroacústica e da composição algorítmica revela que a mediação tecnológica sempre implicou formas de delegação controlada. O compositor projeta um sistema que, ao operar, introduz variações, desvios e combinações não inteiramente antecipáveis. A diferença crucial que se coloca no horizonte contemporâneo — e que será aprofundada nas próximas seções — não reside na presença da tecnologia em si, mas na transformação do regime de mediação: da delegação baseada em regras explícitas para a delegação baseada em aprendizado estatístico e modelagem probabilística.
+
+
+\section{Da automatização à agência algorítmica}
+
+A emergência de modelos de aprendizado profundo introduz uma inflexão qualitativa no regime de mediação tecnológica anteriormente descrito. Se na composição algorítmica clássica o sistema executava regras explicitamente formuladas pelo compositor, os modelos contemporâneos aprendem distribuições estatísticas a partir de grandes volumes de dados, internalizando padrões que não foram diretamente codificados pelo agente humano. WaveNet estabelece um marco ao demonstrar geração de áudio diretamente no domínio temporal por meio de modelagem probabilística autoregressiva de alta fidelidade \cite{oord2016wavenet}. A geração deixa de ser resultado da aplicação de regras transparentes e passa a emergir de inferências estatísticas operadas em redes neurais profundas.
+
+Essa mudança desloca o eixo da automatização para a agência algorítmica. Automatizar implica executar procedimentos previamente definidos; agência, nesse contexto, implica produzir resultados a partir de estruturas internas cuja lógica não é plenamente acessível ao compositor. O modelo não apenas executa instruções, mas infere relações, combina padrões e amostra possibilidades segundo distribuições aprendidas. A mediação deixa de ser puramente operacional e passa a ser inferencial.
+
+O desenvolvimento de representações discretas, como no VQ-VAE \cite{oord2017vqvae}, e autoencoders musicais como o NSynth \cite{engel2017nsynth}, amplia essa transformação ao introduzir o conceito de espaço latente manipulável. O material sonoro pode ser projetado, interpolado ou transformado em regiões abstratas desse espaço, cujas coordenadas não correspondem diretamente a categorias perceptivas tradicionais. O compositor passa a operar não apenas sobre o sinal acústico, mas sobre representações intermediárias aprendidas pelo modelo. A materialidade sonora é mediada por uma camada estatística que reconfigura o acesso ao timbre e à morfologia.
+
+A proposta de DSP diferenciável (DDSP) consolida uma via híbrida especialmente relevante para a música eletroacústica \cite{engel2020ddsp}. Em vez de substituir os modelos clássicos de síntese, o DDSP incorpora osciladores, filtros e envelopes como componentes parametrizáveis dentro de arquiteturas treináveis. Essa integração dissolve a oposição entre tradição do sinal e aprendizado de máquina: o modelo aprende a ajustar estruturas formais já conhecidas, combinando explicabilidade parcial e capacidade adaptativa. A agência algorítmica, nesse caso, opera dentro de um arcabouço técnico historicamente consolidado.
+
+Modelos baseados em difusão e condicionamento textual, como AudioLDM \cite{liu2023audioldm} e MusicGen \cite{copet2023musicgen}, expandem ainda mais o campo ao introduzir controle semântico da geração sonora. A linguagem natural torna-se interface composicional, permitindo descrever qualidades, gestos ou contextos estilísticos que o modelo traduz em material acústico. A mediação algorítmica passa, assim, a operar simultaneamente na materialidade sonora e na camada descritiva. A fronteira entre escuta, descrição e geração torna-se permeável: o que antes era vocabulário analítico pode tornar-se parâmetro de geração.
+
+Essa transição altera profundamente o estatuto do sistema no processo criativo. Nos modelos neurais contemporâneos, a geração emerge de processos de otimização estatística e amostragem probabilística cujos parâmetros não são integralmente transparentes ao compositor. O controle passa a ser exercido por meio de condicionamento, curadoria e seleção, e não por determinação explícita de cada passo do processo. O compositor torna-se operador de distribuições, gestor de latências e editor de possibilidades.
+
+A agência algorítmica, portanto, não significa autonomia plena da máquina, mas redistribuição das camadas decisórias no interior do processo composicional. A mediação passa a envolver aprendizado, inferência e interação iterativa entre humano e modelo. Nesse contexto, a questão central não é mais se a tecnologia participa da criação — fato já consolidado na história da eletroacústica —, mas em que nível essa participação ocorre e como ela reconfigura noções de autoria, intenção e organização sonora.
+
+
+Essa transição desloca o debate da mera automatização para a agência algorítmica. Se na composição algorítmica clássica o sistema executava regras explicitamente projetadas, nos modelos neurais contemporâneos a geração emerge de processos de otimização estatística cujos parâmetros não são integralmente transparentes ao compositor. A mediação passa a envolver aprendizado, inferência e amostragem probabilística, tensionando noções de controle, previsibilidade e intenção autoral já discutidas por Nierhaus \cite{nierhaus2009algorithmiccomposition}.
+
+\section{Níveis de representação e estratificação da mediação}
+
+Um dos aspectos mais relevantes introduzidos pelos modelos generativos contemporâneos é a estratificação dos níveis de representação no interior do processo composicional. Diferentemente das ferramentas digitais tradicionais — que operam predominantemente sobre o sinal acústico ou sobre parâmetros explicitamente definidos — os sistemas atuais distribuem a mediação em camadas distintas: espectral, representacional (latente) e simbólica.
+
+No nível espectral, modelos como WaveNet, Jukebox e MusicLM operam diretamente sobre o áudio contínuo ou sobre representações acústicas de alta complexidade \cite{oord2016wavenet,dhariwal2020jukebox,agostinelli2023musiclm}. Aqui, a geração ocorre na materialidade do som: textura, timbre, densidade e articulação emergem como resultado de processos probabilísticos aplicados ao domínio temporal ou a representações próximas do sinal. Para a música eletroacústica, esse nível dialoga diretamente com a tradição da manipulação concreta do som, pois o objeto gerado já se apresenta como matéria acústica.
+
+No nível representacional intermediário, os modelos operam em espaços latentes aprendidos, como nos autoencoders variacionais e arquiteturas baseadas em quantização vetorial \cite{oord2017vqvae,engel2017nsynth}. Esses espaços não são diretamente perceptíveis, mas estruturam o modo como o som pode ser transformado, interpolado ou reorganizado. A mediação ocorre, então, em um plano abstrato que antecede a materialização acústica. O compositor pode explorar trajetórias nesse espaço, manipulando regiões que correspondem a famílias tímbricas ou comportamentos dinâmicos sem necessariamente operar sobre parâmetros tradicionais de síntese.
+
+No nível simbólico, modelos baseados em atenção e pré-treinamento de larga escala — como Music Transformer, Museformer e MuPT \cite{huang2018musictransformer,zeng2022museformer,qu2024mupt} — modelam partitura, estrutura e dependências de longo prazo. Aqui, a mediação desloca-se para o planejamento formal, organização estrutural e coerência temporal em escala macro. A representação já não é espectral, mas sequencial e abstrata, operando sobre eventos discretos ou notações textuais. Esse nível reintroduz o problema da forma e da arquitetura composicional em diálogo com modelos de linguagem.
+
+Essa estratificação não é meramente técnica; ela implica diferentes regimes de escuta e decisão. No nível espectral, a escuta incide diretamente sobre o resultado acústico. No nível latente, a escuta é mediada por experimentação exploratória — o compositor testa transformações cujas correspondências perceptivas nem sempre são previsíveis. No nível simbólico, a escuta pode ser antecipada por planejamento estrutural, aproximando-se de práticas composicionais tradicionais baseadas em partitura ou esquema formal.
+
+Para a música eletroacústica, essa multiplicidade de camadas coloca uma questão central: como articular esses níveis em um único fluxo composicional coerente? Teorias como a espectromorfologia descrevem categorias perceptivas relacionadas ao comportamento do som no tempo \cite{smalley1997spectromorphology}, mas os espaços latentes aprendidos pelos modelos neurais não se organizam necessariamente segundo essas categorias. Surge, então, uma tensão epistemológica entre vocabulários de escuta historicamente consolidados e estruturas estatísticas internas aos modelos.
+
+A hipótese que orienta esta pesquisa é que a inteligência artificial generativa deve ser compreendida como sistema estratificado de mediação. No nível espectral, atua como geradora de material sonoro; no nível representacional, como moduladora de possibilidades estruturais; no nível simbólico, como mediadora de planejamento formal e articulação macroestrutural. A agência algorítmica distribui-se, portanto, em camadas que reconfiguram tanto a materialidade quanto a organização do discurso musical.
+
+Compreender essa estratificação é fundamental para evitar duas reduções recorrentes: tratar a IA apenas como ferramenta instrumental de síntese ou atribuir-lhe uma autonomia total desvinculada do gesto composicional. A mediação algorítmica opera como sistema complexo de camadas interdependentes, cuja integração crítica constitui o desafio central da prática eletroacústica contemporânea.
+
+
+
+% ------------------------
+% 4. METODOLOGIA
+% ------------------------
+\chapter{Metodologias}
+
+A pesquisa adota uma abordagem qualitativa de caráter teórico-prático, articulando revisão bibliográfica, estudos de caso e experimentação composicional documentada. Parte-se do entendimento de que, no campo da música eletroacústica, prática e reflexão não se dissociam, mas constituem instâncias complementares de investigação.
+
+\section{Pesquisa bibliográfica}
+
+Será realizada revisão sistemática da literatura em três eixos principais: (i) teorias da música eletroacústica e da organização sonora; (ii) composição algorítmica e modelos generativos históricos; e (iii) sistemas contemporâneos de inteligência artificial generativa aplicados à música (áudio, simbólico e modelos híbridos). A revisão tem como objetivo identificar convergências, tensões conceituais e lacunas teóricas relativas à mediação algorítmica no processo composicional.
+
+A análise bibliográfica será orientada por categorias como materialidade sonora, escuta, controle, autoria, agência algorítmica e níveis de representação (espectral, latente e simbólico).
+
+\section{Estudos de caso}
+
+Serão selecionados sistemas e trabalhos representativos de diferentes abordagens de IA generativa (síntese neural, modelos baseados em difusão, modelos simbólicos e modelos de linguagem aplicados à música). A análise dos casos considerará:
+
+\begin{itemize}
+  \item tipo de representação (áudio contínuo, representação latente, partitura/simbólico);
+  \item grau de controlabilidade e parametrização;
+  \item nível de intervenção humana no processo;
+  \item implicações estéticas e formais observáveis.
+\end{itemize}
+
+O objetivo não é avaliar desempenho técnico isoladamente, mas compreender como cada sistema configura diferentes regimes de mediação algorítmica.
+
+\section{Experimentação composicional}
+
+O núcleo empírico da pesquisa consistirá na realização de experimentos composicionais estruturados em três configurações:
+
+\begin{enumerate}
+  \item IA como ferramenta composicional (uso orientado e controlado para geração ou transformação de material);
+  \item IA como coautora (interação dialógica, com decisões parcialmente delegadas ao sistema);
+  \item IA como sistema de geração de material bruto (produção de massas sonoras posteriormente organizadas por escuta e montagem).
+\end{enumerate}
+
+Cada experimento será documentado por meio de registros de processo, descrição de fluxos de trabalho, parâmetros utilizados, decisões composicionais e reflexões críticas sobre previsibilidade, controle e resultado estético.
+
+\section{Análise e modelagem conceitual}
+
+Os resultados obtidos serão analisados comparativamente, buscando identificar padrões de mediação, deslocamentos de controle e efeitos na organização formal e na escuta. A partir dessa análise, será proposto um modelo descritivo de mediação algorítmica aplicável à prática eletroacústica contemporânea.
+
+Esse modelo articulará três níveis principais:
+
+\begin{itemize}
+  \item nível espectral/sonoro (materialidade);
+  \item nível latente/representacional (estrutura intermediária);
+  \item nível simbólico/estrutural (planejamento formal).
+\end{itemize}
+
+A metodologia, portanto, combina investigação conceitual e prática artística, entendendo a composição como campo legítimo de produção de conhecimento.
+
+
+% ------------------------
+% 5. CRONOGRAMA
+% ------------------------
+\chapter{Cronograma}
+
+\begin{table}[h]
+\centering
+\caption{Cronograma de desenvolvimento da pesquisa (24 meses)}
+\begin{tabular}{p{6cm} c}
+\hline
+Etapa & Período \\ \hline
+Revisão bibliográfica e consolidação teórica & Meses 1–4 \\
+Testes preliminares e definição metodológica & Meses 5–8 \\
+Experimentação composicional & Meses 9–14 \\
+Análise e modelagem conceitual & Meses 15–18 \\
+Redação dos capítulos analíticos & Meses 19–22 \\
+Revisão final e preparação para defesa & Meses 23–24 \\ \hline
+\end{tabular}
+\end{table}
+
+% ------------------------
+% REFERÊNCIAS ENTRAM NO main.tex
+% ------------------------

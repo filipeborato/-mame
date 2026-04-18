@@ -1,0 +1,63 @@
+% ------------------------
+% Pacotes básicos
+% ------------------------
+% Fonte Times New Roman real (XeLaTeX)
+\usepackage{fontspec}
+\usepackage{url}
+\usepackage{microtype}
+\usepackage{ragged2e}
+\usepackage{hyphenat}
+\setlength{\emergencystretch}{3em}
+\usepackage[alf]{abntex2cite}
+
+\setmainfont{Times New Roman}
+
+% (opcional) se você usar negrito/itálico e der treta:
+% \setmainfont{Times New Roman}[
+%   BoldFont = Times New Roman Bold,
+%   ItalicFont = Times New Roman Italic,
+%   BoldItalicFont = Times New Roman Bold Italic
+% ]
+% ------------------------
+% Margens PPGMUS (2,5cm)
+% ------------------------
+\usepackage[
+  a4paper,
+  top=2.5cm,
+  bottom=2.5cm,
+  left=2.5cm,
+  right=2.5cm
+]{geometry}
+
+% ------------------------
+% Espaçamento
+% ------------------------
+\usepackage{setspace}
+\OnehalfSpacing
+\setlength{\parindent}{1.5cm}
+\setlength{\parskip}{0pt}
+
+% ------------------------
+% Cabeçalho com número da página (Times 10, topo direito)
+% ------------------------
+% \usepackage{fancyhdr}
+% \pagestyle{fancy}
+% \fancyhf{}
+% \fancyhead[R]{\fontsize{10}{10}\selectfont\thepage}
+% \renewcommand{\headrulewidth}{0pt}
+% =========================
+
+% ------------------------
+% Dados da capa
+% ------------------------
+\titulo{Mediação algorítmica na música eletroacústica: aplicações da inteligência artificial generativa como ferramenta, coautora e sistema de geração sonora}
+\autor{Filipe Borato De Castro}
+\local{Curitiba}
+\data{2026}
+
+% ------------------------
+% Configuração ABNT
+% ------------------------
+\setlength{\ABNTEXcitacaorecuo}{4cm}
+\renewcommand{\ABNTEXfontereduzida}{\fontsize{10}{12}\selectfont}
+

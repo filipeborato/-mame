@@ -1,0 +1,26 @@
+% !TEX program = xelatex
+% !BIB program = bibtex
+\documentclass[
+  12pt,
+  openright,
+  oneside,
+  a4paper,
+  english,
+  brazil
+]{abntex2}
+
+\input{config}
+
+\begin{document}
+
+% Capa
+\imprimircapa
+
+% Resumo
+\input{conteudo}
+
+% Referências
+\bibliographystyle{abntex2-alf}
+\bibliography{referencias/bib/referencias}
+
+\end{document}

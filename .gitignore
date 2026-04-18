@@ -1,0 +1,53 @@
+# ===== Saída do LaTeX =====
+*.pdf
+*.dvi
+*.ps
+*.xdv
+
+# ===== Auxiliares de compilação =====
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+
+# ===== Bibliografia =====
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*-blx.bib
+
+# ===== Índice / Glossário / Siglas (abntex2) =====
+*.idx
+*.ind
+*.ilg
+*.glo
+*.gls
+*.glg
+*.ist
+*.nlo
+*.nls
+*.nlg
+*.acn
+*.acr
+*.alg
+
+# ===== Backups e temporários =====
+*.bak
+*.backup
+*.tmp
+*~
+
+# ===== Editor / OS =====
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+Desktop.ini
