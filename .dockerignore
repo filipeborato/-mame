@@ -1,0 +1,27 @@
+.git
+.vscode
+.idea
+
+# LaTeX build output
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.dvi
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.pdf
+*.run.xml
+*.synctex.gz
+*.toc
+*.xdv
+
+# Reference PDFs stay on the host and are mounted at runtime.
+referencias/pdf/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+Desktop.ini
